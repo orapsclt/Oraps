@@ -12,20 +12,30 @@ body {
     padding: 40px;
 }
 
-/* Texte caché au début */
+/* Lignes cachées */
 .line {
     opacity: 0;
     margin-bottom: 12px;
     transition: opacity 0.8s;
 }
 
-/* Effet titre */
+/* Titre */
 h1 {
     color: #ccc;
     margin-bottom: 30px;
 }
 
-/* Effet curseur */
+/* Image */
+img {
+    display: block;
+    margin-top: 30px;
+    max-width: 300px;
+    opacity: 0;
+    transition: opacity 1s;
+    border: 1px solid #444;
+}
+
+/* Curseur */
 .cursor::after {
     content: "_";
     animation: blink 1s infinite;
@@ -52,17 +62,27 @@ h1 {
     <div class="line">Pseudo : flynxs_</div>
     <div class="line">Statut : Sous surveillance</div>
     <div class="line">---</div>
-    <div class="line">Fin du rapport.</div>
+    <div class="line">Chargement de l'image...</div>
 </div>
+
+<!-- IMAGE -->
+<img id="secretImage" src="sujet1.png" alt="Sujet">
 
 <script>
 const lines = document.querySelectorAll(".line");
+const image = document.getElementById("secretImage");
 
+// Apparition des lignes
 lines.forEach((line, index) => {
     setTimeout(() => {
         line.style.opacity = 1;
     }, index * 1200);
 });
+
+// Apparition de l'image après le texte
+setTimeout(() => {
+    image.style.opacity = 1;
+}, lines.length * 1200 + 500);
 </script>
 
 </body>
