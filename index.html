@@ -8,7 +8,7 @@
 body {
     margin: 0;
     height: 100vh;
-    background: black url('https://raw.githubusercontent.com/orapsclt/Oraps/main/oeil-hexagramme.png') no-repeat center center fixed; /* ← remplace par l'URL raw de TON image uploadée */
+    background: black url('./oeil-hexagramme.png') no-repeat center center fixed;
     background-size: cover;
     color: white;
     font-family: monospace;
@@ -17,6 +17,7 @@ body {
     align-items: center;
     flex-direction: column;
     position: relative;
+    overflow: hidden;
 }
 
 body::before {
@@ -37,7 +38,26 @@ body::before {
     margin-bottom: 50px;
     color: #c00;
     letter-spacing: 6px;
-    text-shadow: 0 0 20px #800, 0 0 40px #400;
+    text-shadow: 
+        0 0 10px #c00,
+        0 0 20px #800,
+        0 0 40px #400,
+        0 0 60px #200;
+    animation: 
+        pulse 2.5s infinite ease-in-out,
+        flicker 0.12s infinite alternate;
+}
+
+@keyframes pulse {
+    0%, 100% { text-shadow: 0 0 10px #c00, 0 0 20px #800, 0 0 40px #400; }
+    50%      { text-shadow: 0 0 25px #f00, 0 0 50px #c00, 0 0 90px #800; }
+}
+
+@keyframes flicker {
+    0%   { opacity: 1; }
+    49%  { opacity: 1; }
+    50%  { opacity: 0.94; }
+    100% { opacity: 1; }
 }
 
 input {
@@ -51,13 +71,14 @@ input {
     width: 320px;
 }
 
-input::Accès autorisé { color: #600; }
-input.invalid::Accès refusé { color: #f66; }
+input::placeholder { color: #600; }
+input.invalid::placeholder { color: #f66; }
 
 .expired {
     color: #f44;
     font-size: 1.6em;
     margin-top: 30px;
+    text-shadow: 0 0 10px #f44;
 }
 </style>
 </head>
