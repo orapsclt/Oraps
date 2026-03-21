@@ -2,19 +2,29 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accès autorisé</title>
 
     <style>
         body {
             background: #050505;
-            color: #00ffcc;
-            font-family: monospace;
+            color: #00ffcc; /* Cyan/bleu terminal */
+            font-family: 'Courier New', Courier, monospace; /* Police monospace pour le style terminal */
             padding: 40px;
+            font-size: 1.1em; /* Légèrement plus grand pour la lisibilité */
+            line-height: 1.5; /* Plus d'espace entre les lignes */
+        }
+
+        h1 {
+            font-size: 1.5em; /* Taille du titre */
+            margin-bottom: 20px;
         }
 
         /* Effet de curseur clignotant pour renforcer le style terminal */
         .typing::after {
             content: "|";
+            font-weight: bold;
+            color: #00ffcc;
             animation: blink 0.7s infinite;
         }
 
@@ -32,11 +42,13 @@
     <p id="p3"></p>
 
     <script>
+        // Le texte est maintenant stocké ici.
+        // J'ai ajouté des sauts de ligne manuels avec '\n' après chaque ':'
         const sequence = [
             { id: "titre", text: "ACCÈS AUTORISÉ" },
             { id: "p1", text: "Si tu lis ceci, c’est que tu fais partie des rares à avoir trouvé le bon chemin." },
             { id: "p2", text: "Ils observent. Toujours." },
-            { id: "p3", text: "Ton objectif commence maintenant. AIDE MOI À DETRUIRE LE CULTE, je t'en supplie.. il nous reste plus beaucoup de temps... reviens sur ce site dans environ 1 jours. un bouton sera caché clique dessus!" }
+            { id: "p3", text: "Ton objectif commence maintenant.\nAIDE MOI À DETRUIRE LE CULTE, je t'en supplie.. il nous reste plus beaucoup de temps...\nreviens sur ce site dans environ 1 jours.\nun bouton sera caché clique dessus!" }
         ];
 
         let seqIndex = 0;
@@ -47,11 +59,19 @@
                 const current = sequence[seqIndex];
                 const element = document.getElementById(current.id);
                 
-                // On ajoute la classe 'typing' pour avoir le curseur sur la ligne en cours
+                // On ajoute la classe 'typing' pour avoir le curseur
                 element.classList.add('typing');
 
                 if (charIndex < current.text.length) {
-                    element.innerHTML += current.text.charAt(charIndex);
+                    const charToAdd = current.text.charAt(charIndex);
+                    
+                    // Gestion du saut de ligne
+                    if (charToAdd === '\n') {
+                        element.innerHTML += '<br>'; // Ajoute un saut de ligne HTML
+                    } else {
+                        element.innerHTML += charToAdd;
+                    }
+                    
                     charIndex++;
                     setTimeout(typeEffect, 40); // Vitesse des lettres (40ms)
                 } else {
@@ -70,4 +90,3 @@
 
 </body>
 </html>
-
