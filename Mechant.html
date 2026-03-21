@@ -42,7 +42,7 @@
             { id: "titre", content: "NOUS T'AVONS TROUVÉ" },
             { id: "p1", content: "TU FAIS OFFICIELLEMENT PARTIE DE ORAPS." },
             { id: "p2", content: "Mais maintenant que tu es là... il n'y a plus de retour." },
-            { id: "p3", content: "Mission : DESSINE LE LOGO DE ORAPS ET ENVOIE LE AU EMAIL. NOUS AVONS BESOIN QUE 3 PERSONNE FASSE LE SYMBOLE. AVANT LA FIN DU COMPTEUR !" }
+            { id: "p3", content: "Mission : envoyée votre nom, pseudo et photo aur l'émail oraps.recrutement@gmail.com" }
         ];
 
         let textIndex = 0;
@@ -50,7 +50,7 @@
 
         function typeWriter() {
             if (textIndex < texts.length) {
-                let currentItem = texts[textIndex];
+            
                 let element = document.getElementById(currentItem.id);
                 
                 if (charIndex < currentItem.content.length) {
