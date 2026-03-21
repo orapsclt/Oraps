@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Accès</title>
+
+<style>
+body {
+    margin: 0;
+    background: black;
+    color: white;
+    font-family: monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+#countdown {
+    font-size: 60px;
+    margin-bottom: 40px;
+}
+
+input {
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    outline: none;
+}
+</style>
+</head>
+
+<body>
+
+<div id="countdown">00:10:00</div>
+<input type="text" id="codeInput" placeholder="entrer le code..." />
+
+<script>
+const goodCode = "LUMIERE";
+const badCode = "OMBRE";
+
+let time = 600;
+
+function updateCountdown() {
+    let m = Math.floor(time / 60);
+    let s = time % 60;
+
+    document.getElementById("countdown").textContent =
+        String(m).padStart(2, '0') + ":" +
+        String(s).padStart(2, '0');
+
+    time--;
+    if (time >= 0) setTimeout(updateCountdown, 1000);
+}
+
+updateCountdown();
+
+document.getElementById("codeInput").addEventListener("keydown", function(e) {
+    if (e.key === "Enter") {
+        let value = this.value;
+
+        if (value === goodCode) {
+            window.location.href = "gentils.html";
+        } else if (value === badCode) {
+            window.location.href = "mechants.html";
+        } else {
+            this.value = "";
+            this.placeholder = "code invalide...";
+        }
+    }
+});
+</script>
+
+</body>
+</html>
