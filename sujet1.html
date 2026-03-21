@@ -12,7 +12,7 @@ body {
     padding: 40px;
 }
 
-/* Lignes cachées au début */
+/* Lignes cachées */
 .line {
     opacity: 0;
     margin-bottom: 12px;
@@ -25,11 +25,13 @@ h1 {
     margin-bottom: 30px;
 }
 
-/* IMAGE visible direct */
+/* Image */
 img {
     display: block;
-    margin-bottom: 30px;
+    margin-top: 30px;
     max-width: 300px;
+    opacity: 0;
+    transition: opacity 1s;
     border: 1px solid #444;
 }
 
@@ -50,9 +52,6 @@ img {
 
 <h1 class="cursor">Sujet numéro 1</h1>
 
-<!-- IMAGE visible dès le début -->
-<img src="Sujet1.png" alt="Sujet">
-
 <div id="content">
     <div class="line">Initialisation du dossier...</div>
     <div class="line">Connexion au système...</div>
@@ -63,17 +62,27 @@ img {
     <div class="line">Pseudo : flynxs_</div>
     <div class="line">Statut : Sous surveillance</div>
     <div class="line">---</div>
-    <div class="line">Fin du rapport.</div>
+    <div class="line">Chargement de l'image...</div>
 </div>
+
+<!-- IMAGE -->
+<img id="secretImage" src="Sujet1.png" alt="Sujet">
 
 <script>
 const lines = document.querySelectorAll(".line");
+const image = document.getElementById("secretImage");
 
+// Apparition des lignes
 lines.forEach((line, index) => {
     setTimeout(() => {
         line.style.opacity = 1;
     }, index * 1200);
 });
+
+// Apparition de l'image après le texte
+setTimeout(() => {
+    image.style.opacity = 1;
+}, lines.length * 1200 + 500);
 </script>
 
 </body>
