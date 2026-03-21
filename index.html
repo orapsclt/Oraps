@@ -1,5 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Accès</title>
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: black url('./oeil-hexagramme.png') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    font-family: monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 0;
+}
+
+#countdown, input, .expired {
+    position: relative;
+    z-index: 1;
+}
+
+#countdown {
+    font-size: 80px;
+    margin-bottom: 50px;
+    color: #c00;
+    letter-spacing: 6px;
+    text-shadow: 
+        0 0 10px #c00,
+        0 0 20px #800,
+        0 0 40px #400,
+        0 0 60px #200;
+    animation: 
+        pulse 2.5s infinite ease-in-out,
+        flicker 0.12s infinite alternate;
+}
+
+@keyframes pulse {
+    0%, 100% { text-shadow: 0 0 10px #c00, 0 0 20px #800, 0 0 40px #400; }
+    50%      { text-shadow: 0 0 25px #f00, 0 0 50px #c00, 0 0 90px #800; }
+}
+
+@keyframes flicker {
+    0%   { opacity: 1; }
+    49%  { opacity: 1; }
+    50%  { opacity: 0.94; }
+    100% { opacity: 1; }
+}
+
+input {
+    background: transparent;
+    border: 1px solid #c00;
+    color: #c00;
+    padding: 14px 24px;
+    text-align: center;
+    outline: none;
+    font-size: 1.4em;
+    width: 320px;
+}
+
+input::placeholder { color: #600; }
+input.invalid::placeholder { color: #f66; }
+
+.expired {
+    color: #f44;
+    font-size: 1.6em;
+    margin-top: 30px;
+    text-shadow: 0 0 10px #f44;
+}
+</style>
+</head>
+
+<body>
+
+<div id="countdown">Calcul en cours...</div>
+<input type="text" id="codeInput" placeholder="entrer le code..." autofocus />
+
+<div id="expiredMessage" class="expired" style="display:none;">TEMPS ÉCOULÉ – ACCÈS FERMÉ</div>
+
 <script>
-// Date cible : 28 mars 2026 à 21:00 France (CET = UTC+1) → 20:00 UTC
+// Date cible : 28 mars 2026 à 21:00 France → 20:00 UTC
 const targetDate = new Date('2026-03-28T20:00:00Z').getTime();
 
 // 🔑 TOUS TES CODES
@@ -7,7 +99,7 @@ const codes = {
     "NICHE.": "Gentil.html",
     "ORAPS3": "Mechant.html",
     "9204": "sujet1.html",
-    "CREATRICE.CLT": "chef.html"
+    "CREATRICE CLT": "chef.html"
 };
 
 const countdownEl = document.getElementById("countdown");
@@ -58,6 +150,7 @@ inputEl.addEventListener("keydown", function(e) {
             this.value = "";
             this.classList.add("invalid");
             this.placeholder = "code invalide... réessaie";
+
             setTimeout(() => {
                 this.classList.remove("invalid");
                 this.placeholder = "entrer le code...";
@@ -66,3 +159,6 @@ inputEl.addEventListener("keydown", function(e) {
     }
 });
 </script>
+
+</body>
+</html>
