@@ -11,21 +11,59 @@ body {
     font-family: monospace;
     padding: 40px;
 }
+
+/* Texte caché au début */
+.line {
+    opacity: 0;
+    margin-bottom: 12px;
+    transition: opacity 0.8s;
+}
+
+/* Effet titre */
+h1 {
+    color: #ccc;
+    margin-bottom: 30px;
+}
+
+/* Effet curseur */
+.cursor::after {
+    content: "_";
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+}
 </style>
 </head>
 
 <body>
 
-<h1>Sujet numéro 1</h1>
+<h1 class="cursor">Sujet numéro 1</h1>
 
-<p>
-Dossier ouvert.
-</p>
+<div id="content">
+    <div class="line">Initialisation du dossier...</div>
+    <div class="line">Connexion au système...</div>
+    <div class="line">Accès accordé.</div>
+    <div class="line">---</div>
+    <div class="line">Nom : Thomas</div>
+    <div class="line">Âge : 14 ans</div>
+    <div class="line">Pseudo : flynxs_</div>
+    <div class="line">Statut : Sous surveillance</div>
+    <div class="line">---</div>
+    <div class="line">Fin du rapport.</div>
+</div>
 
-<p>
-Sujet : inconnu.
-Observation en cours…
-</p>
+<script>
+const lines = document.querySelectorAll(".line");
+
+lines.forEach((line, index) => {
+    setTimeout(() => {
+        line.style.opacity = 1;
+    }, index * 1200);
+});
+</script>
 
 </body>
 </html>
