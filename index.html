@@ -7,150 +7,81 @@
 <style>
 body {
     margin: 0;
-    height: 100vh;
-    background: black url('./oeil-hexagramme.png') no-repeat center center fixed;
-    background-size: cover;
+    background: black;
     color: white;
     font-family: monospace;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
     flex-direction: column;
-    position: relative;
-    overflow: hidden;
-}
-
-body::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.65);
-    z-index: 0;
-}
-
-#countdown, input, .expired {
-    position: relative;
-    z-index: 1;
 }
 
 #countdown {
-    font-size: 80px;
-    margin-bottom: 50px;
-    color: #c00;
-    letter-spacing: 6px;
-    text-shadow: 
-        0 0 10px #c00,
-        0 0 20px #800,
-        0 0 40px #400,
-        0 0 60px #200;
-    animation: 
-        pulse 2.5s infinite ease-in-out,
-        flicker 0.12s infinite alternate;
-}
-
-@keyframes pulse {
-    0%, 100% { text-shadow: 0 0 10px #c00, 0 0 20px #800, 0 0 40px #400; }
-    50%      { text-shadow: 0 0 25px #f00, 0 0 50px #c00, 0 0 90px #800; }
-}
-
-@keyframes flicker {
-    0%   { opacity: 1; }
-    49%  { opacity: 1; }
-    50%  { opacity: 0.94; }
-    100% { opacity: 1; }
+    font-size: 60px;
+    margin-bottom: 40px;
+    letter-spacing: 5px;
 }
 
 input {
     background: transparent;
-    border: 1px solid #c00;
-    color: #c00;
-    padding: 14px 24px;
+    border: 1px solid white;
+    color: white;
+    padding: 10px;
     text-align: center;
     outline: none;
-    font-size: 1.4em;
-    width: 320px;
+    width: 200px;
 }
 
-input::placeholder { color: #600; }
-input.invalid::placeholder { color: #f66; }
-
-.expired {
-    color: #f44;
-    font-size: 1.6em;
-    margin-top: 30px;
-    text-shadow: 0 0 10px #f44;
+input::placeholder {
+    color: gray;
 }
 </style>
 </head>
 
 <body>
 
-<div id="countdown">Calcul en cours...</div>
-<input type="text" id="codeInput" placeholder="entrer le code..." autofocus />
-
-<div id="expiredMessage" class="expired" style="display:none;">TEMPS ÉCOULÉ – ACCÈS FERMÉ</div>
+<div id="countdown">00:10:00</div>
+<input type="text" id="codeInput" placeholder="entrer le code..." />
 
 <script>
-// Date cible : 28 mars 2026 à 21:00 France (CET = UTC+1) → 20:00 UTC
-const targetDate = new Date('2026-03-28T20:00:00Z').getTime();
+// 🔑 CODES
+const codes = {
+    "niche.": "gentils.html",
+    "oraps3": "mechants.html",
+    "9204": "sujet1.html",
+    "creatrice.clt": "chef.html"
+};
 
-const GOOD_CODE = "niche.";
-const BAD_CODE  = "oraps3";
-
-const countdownEl = document.getElementById("countdown");
-const inputEl     = document.getElementById("codeInput");
-const expiredEl   = document.getElementById("expiredMessage");
-
-let timerInterval;
+// ⏳ COMPTE À REBOURS (10 minutes)
+let time = 600;
 
 function updateCountdown() {
-    const now = Date.now();
-    const remaining = targetDate - now;
+    let m = Math.floor(time / 60);
+    let s = time % 60;
 
-    if (remaining <= 0) {
-        clearInterval(timerInterval);
-        countdownEl.textContent = "00:00:00:00";
-        countdownEl.style.color = "#f44";
-        expiredEl.style.display = "block";
-        inputEl.disabled = true;
-        inputEl.placeholder = "ACCÈS FERMÉ";
-        return;
+    document.getElementById("countdown").textContent =
+        String(m).padStart(2, '0') + ":" +
+        String(s).padStart(2, '0');
+
+    time--;
+    if (time >= 0) {
+        setTimeout(updateCountdown, 1000);
     }
-
-    const days    = Math.floor(remaining / (1000 * 60 * 60 * 24));
-    const hours   = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-
-    countdownEl.textContent = 
-        String(days).padStart(2, '0') + "j " +
-        String(hours).padStart(2, '0') + ":" +
-        String(minutes).padStart(2, '0') + ":" +
-        String(seconds).padStart(2, '0');
 }
 
-timerInterval = setInterval(updateCountdown, 1000);
-updateCountdown();  // appel immédiat
+updateCountdown();
 
-inputEl.addEventListener("keydown", function(e) {
+// 🔐 SYSTÈME DE CODE
+document.getElementById("codeInput").addEventListener("keydown", function(e) {
     if (e.key === "Enter") {
-        e.preventDefault();
-        let value = this.value.trim().toUpperCase();
+        let value = this.value.trim();
 
-        if (value === GOOD_CODE.toUpperCase()) {
-            window.location.href = "Gentil.html";
-        } 
-        else if (value === BAD_CODE.toUpperCase()) {
-            window.location.href = "Mechant.html";
-        } 
-        else {
+        if (codes[value]) {
+            window.location.href = codes[value];
+        } else {
             this.value = "";
-            this.classList.add("invalid");
-            this.placeholder = "code invalide... réessaie";
-            setTimeout(() => {
-                this.classList.remove("invalid");
-                this.placeholder = "entrer le code...";
-            }, 1800);
+            this.placeholder = "code invalide...";
         }
     }
 });
