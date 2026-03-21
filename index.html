@@ -1,91 +1,68 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>Accès</title>
-
-<style>
-body {
-    margin: 0;
-    background: black;
-    color: white;
-    font-family: monospace;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    flex-direction: column;
-}
-
-#countdown {
-    font-size: 60px;
-    margin-bottom: 40px;
-    letter-spacing: 5px;
-}
-
-input {
-    background: transparent;
-    border: 1px solid white;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    outline: none;
-    width: 200px;
-}
-
-input::placeholder {
-    color: gray;
-}
-</style>
-</head>
-
-<body>
-
-<div id="countdown">00:10:00</div>
-<input type="text" id="codeInput" placeholder="entrer le code..." />
-
 <script>
-// 🔑 CODES
+// Date cible : 28 mars 2026 à 21:00 France (CET = UTC+1) → 20:00 UTC
+const targetDate = new Date('2026-03-28T20:00:00Z').getTime();
+
+// 🔑 TOUS TES CODES
 const codes = {
-    "niche.": "gentils.html",
-    "oraps3": "mechants.html",
+    "NICHE.": "Gentil.html",
+    "ORAPS3": "Mechant.html",
     "9204": "sujet1.html",
-    "creatrice.clt": "chef.html"
+    "CREATRICE.CLT": "chef.html"
 };
 
-// ⏳ COMPTE À REBOURS (10 minutes)
-let time = 600;
+const countdownEl = document.getElementById("countdown");
+const inputEl     = document.getElementById("codeInput");
+const expiredEl   = document.getElementById("expiredMessage");
+
+let timerInterval;
 
 function updateCountdown() {
-    let m = Math.floor(time / 60);
-    let s = time % 60;
+    const now = Date.now();
+    const remaining = targetDate - now;
 
-    document.getElementById("countdown").textContent =
-        String(m).padStart(2, '0') + ":" +
-        String(s).padStart(2, '0');
-
-    time--;
-    if (time >= 0) {
-        setTimeout(updateCountdown, 1000);
+    if (remaining <= 0) {
+        clearInterval(timerInterval);
+        countdownEl.textContent = "00:00:00:00";
+        countdownEl.style.color = "#f44";
+        expiredEl.style.display = "block";
+        inputEl.disabled = true;
+        inputEl.placeholder = "ACCÈS FERMÉ";
+        return;
     }
+
+    const days    = Math.floor(remaining / (1000 * 60 * 60 * 24));
+    const hours   = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+    countdownEl.textContent = 
+        String(days).padStart(2, '0') + "j " +
+        String(hours).padStart(2, '0') + ":" +
+        String(minutes).padStart(2, '0') + ":" +
+        String(seconds).padStart(2, '0');
 }
 
+timerInterval = setInterval(updateCountdown, 1000);
 updateCountdown();
 
 // 🔐 SYSTÈME DE CODE
-document.getElementById("codeInput").addEventListener("keydown", function(e) {
+inputEl.addEventListener("keydown", function(e) {
     if (e.key === "Enter") {
-        let value = this.value.trim();
+        e.preventDefault();
+
+        let value = this.value.trim().toUpperCase();
 
         if (codes[value]) {
             window.location.href = codes[value];
         } else {
             this.value = "";
-            this.placeholder = "code invalide...";
+            this.classList.add("invalid");
+            this.placeholder = "code invalide... réessaie";
+            setTimeout(() => {
+                this.classList.remove("invalid");
+                this.placeholder = "entrer le code...";
+            }, 1800);
         }
     }
 });
 </script>
-
-</body>
-</html>
