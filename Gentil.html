@@ -1,40 +1,74 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Accès autorisé</title>
+    <meta charset="UTF-8">
+    <title>Accès autorisé</title>
 
-<style>
-body {
-    background: #050505;
-    color: #00ffcc;
-    font-family: monospace;
-    padding: 40px;
-}
-</style>
+    <style>
+        body {
+            background: #050505;
+            color: #00ffcc;
+            font-family: monospace;
+            padding: 40px;
+        }
+
+        /* Effet de curseur clignotant pour renforcer le style terminal */
+        .typing::after {
+            content: "|";
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+    </style>
 </head>
 
 <body>
 
-<h1>ACCÈS AUTORISÉ</h1>
+    <h1 id="titre"></h1>
+    <p id="p1"></p>
+    <p id="p2"></p>
+    <p id="p3"></p>
 
-<p>
-Si tu lis ceci, c’est que tu fais partie des rares à avoir trouvé le bon chemin.
-</p>
+    <script>
+        const sequence = [
+            { id: "titre", text: "ACCÈS AUTORISÉ" },
+            { id: "p1", text: "Si tu lis ceci, c’est que tu fais partie des rares à avoir trouvé le bon chemin." },
+            { id: "p2", text: "Ils observent. Toujours." },
+            { id: "p3", text: "Ton objectif commence maintenant. AIDE MOI À DETRUIRE LE CULTE, je t'en supplie..
+                il nous reste plus beaucoup de temps... 
+            reviens sur ce site dans environ 1 jours. un bouton sera caché clique dessus!" }
+        ];
 
-<p>
-Ils observent. Toujours.
-</p>
+        let seqIndex = 0;
+        let charIndex = 0;
 
-<p>
-Ton objectif commence maintenant.
-AIDE MOI À DETRUIRE LE CULTE, je t'en supplie..
-il nous reste plus beaucoup de temps...
-reviens sur ce site dans environ 1 jours. 
-un bouton sera caché clique dessus!
-</p>
+        function typeEffect() {
+            if (seqIndex < sequence.length) {
+                const current = sequence[seqIndex];
+                const element = document.getElementById(current.id);
+                
+                // On ajoute la classe 'typing' pour avoir le curseur sur la ligne en cours
+                element.classList.add('typing');
+
+                if (charIndex < current.text.length) {
+                    element.innerHTML += current.text.charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeEffect, 40); // Vitesse des lettres (40ms)
+                } else {
+                    // On retire le curseur de la ligne finie
+                    element.classList.remove('typing');
+                    seqIndex++;
+                    charIndex = 0;
+                    setTimeout(typeEffect, 600); // Pause entre les paragraphes (600ms)
+                }
+            }
+        }
+
+        // Lancement au chargement
+        window.onload = typeEffect;
+    </script>
 
 </body>
 </html>
-
-
