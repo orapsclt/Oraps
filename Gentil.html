@@ -9,18 +9,18 @@
         body {
             background: #050505;
             color: #00ffcc; /* Cyan/bleu terminal */
-            font-family: 'Courier New', Courier, monospace; /* Police monospace pour le style terminal */
+            font-family: 'Courier New', Courier, monospace;
             padding: 40px;
-            font-size: 1.1em; /* Légèrement plus grand pour la lisibilité */
-            line-height: 1.5; /* Plus d'espace entre les lignes */
+            font-size: 1.1em;
+            line-height: 1.5;
         }
 
         h1 {
-            font-size: 1.5em; /* Taille du titre */
+            font-size: 1.5em;
             margin-bottom: 20px;
         }
 
-        /* Effet de curseur clignotant pour renforcer le style terminal */
+        /* Effet de curseur clignotant uniquement sur l'élément en cours */
         .typing::after {
             content: "|";
             font-weight: bold;
@@ -31,6 +31,12 @@
         @keyframes blink {
             50% { opacity: 0; }
         }
+        
+        /* Pour s'assurer que l'email ressorte bien */
+        .email-highlight {
+            text-decoration: underline;
+            font-weight: bold;
+        }
     </style>
 </head>
 
@@ -40,15 +46,13 @@
     <p id="p1"></p>
     <p id="p2"></p>
     <p id="p3"></p>
-
-    <script>
-        // Le texte est maintenant stocké ici.
-        // J'ai ajouté des sauts de ligne manuels avec '\n' après chaque ':'
+    <p id="p4"></p> <script>
         const sequence = [
             { id: "titre", text: "ACCÈS AUTORISÉ" },
             { id: "p1", text: "Si tu lis ceci, c’est que tu fais partie des rares à avoir trouvé le bon chemin." },
             { id: "p2", text: "Ils observent. Toujours." },
-            { id: "p3", text: "Ton objectif commence maintenant.\nAIDE MOI À DETRUIRE LE CULTE, je t'en supplie.. il nous reste plus beaucoup de temps...\nreviens sur ce site dans environ 1 jours.\nun bouton sera caché clique dessus!" }
+            { id: "p3", text: "Ton objectif commence maintenant.\nAIDE MOI À DETRUIRE LE CULTE, je t'en supplie.. il nous reste plus beaucoup de temps...\nreviens sur ce site dans environ 1 jours.\nun bouton sera caché clique dessus!" },
+            { id: "p4", text: "POUR CONFIRMER QUE TU ES AVEC MOI : envoie ton nom, pseudo et photo sur l'émail anti.oraps@gmail.com" }
         ];
 
         let seqIndex = 0;
@@ -59,32 +63,30 @@
                 const current = sequence[seqIndex];
                 const element = document.getElementById(current.id);
                 
-                // On ajoute la classe 'typing' pour avoir le curseur
+                // On active le curseur sur la ligne actuelle
                 element.classList.add('typing');
 
                 if (charIndex < current.text.length) {
                     const charToAdd = current.text.charAt(charIndex);
                     
-                    // Gestion du saut de ligne
                     if (charToAdd === '\n') {
-                        element.innerHTML += '<br>'; // Ajoute un saut de ligne HTML
+                        element.innerHTML += '<br>'; 
                     } else {
                         element.innerHTML += charToAdd;
                     }
                     
                     charIndex++;
-                    setTimeout(typeEffect, 40); // Vitesse des lettres (40ms)
+                    setTimeout(typeEffect, 40); 
                 } else {
-                    // On retire le curseur de la ligne finie
+                    // On retire le curseur dès que la ligne est finie
                     element.classList.remove('typing');
                     seqIndex++;
                     charIndex = 0;
-                    setTimeout(typeEffect, 600); // Pause entre les paragraphes (600ms)
+                    setTimeout(typeEffect, 800); // Pause un peu plus longue avant l'instruction finale
                 }
             }
         }
 
-        // Lancement au chargement
         window.onload = typeEffect;
     </script>
 
