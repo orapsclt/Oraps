@@ -44,7 +44,7 @@ a:hover {
     color: #f44;
 }
 
-/* Curseur clignotant */
+/* Curseur */
 .cursor {
     border-right: 2px solid #c00;
     animation: blink 0.7s infinite;
@@ -56,7 +56,7 @@ a:hover {
     50%      { border-color: transparent; }
 }
 
-/* Glitch léger */
+/* Glitch */
 .glitch {
     animation: glitch 5s infinite;
 }
@@ -72,6 +72,23 @@ a:hover {
 p, h1 {
     min-height: 1.4em;
 }
+
+/* 🔥 BOUTON SECRET */
+#secretBtn {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    background: rgba(255,0,0,0.1);
+    border: 1px solid rgba(255,0,0,0.2);
+    cursor: pointer;
+    z-index: 999;
+}
+
+#secretBtn:hover {
+    background: rgba(255,0,0,0.3);
+}
 </style>
 </head>
 
@@ -86,6 +103,9 @@ p, h1 {
 <div class="file" id="file2"><a href="Doc2.docx" target="_blank">rapport1_sujet.docx</a></div>
 <div class="file" id="file3"><a href="Doc3.docx" target="_blank">rapport2.docx</a></div>
 <div class="file" id="file4"><a href="Doc4.docx" target="_blank">expérience.docx</a></div>
+
+<!-- 🔥 BOUTON SECRET -->
+<div id="secretBtn"></div>
 
 <script>
 const texts = [
@@ -113,17 +133,15 @@ function typewriter() {
         if (charIndex < currentItem.content.length) {
             element.innerHTML = currentItem.content.substring(0, charIndex + 1) + '<span class="cursor">|</span>';
             charIndex++;
-            setTimeout(typewriter, 60);  // vitesse frappe
+            setTimeout(typewriter, 60);
         } else {
             element.innerHTML = currentItem.content;
             textIndex++;
             charIndex = 0;
-            setTimeout(typewriter, 1500);  // pause entre paragraphes
+            setTimeout(typewriter, 1500);
         }
     } else {
-        // Tous les textes affichés → on enlève le curseur final
         document.querySelectorAll('.cursor').forEach(c => c.remove());
-        // Puis on fait apparaître les fichiers un par un
         showFiles(0);
     }
 }
@@ -132,13 +150,18 @@ function showFiles(index) {
     if (index < files.length) {
         const fileEl = document.getElementById(files[index]);
         fileEl.classList.add("visible");
-        setTimeout(() => showFiles(index + 1), 1200);  // délai entre chaque fichier
+        setTimeout(() => showFiles(index + 1), 1200);
     }
 }
+
+// 🔐 REDIRECTION BOUTON SECRET
+document.getElementById("secretBtn").addEventListener("click", () => {
+    window.location.href = "sparo.html";
+});
 
 // Lancer au chargement
 window.onload = typewriter;
 </script>
 
 </body>
-</html> 
+</html>
