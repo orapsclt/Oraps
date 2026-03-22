@@ -91,15 +91,18 @@ input.invalid::placeholder { color: #f66; }
 <div id="expiredMessage" class="expired" style="display:none;">TEMPS ÉCOULÉ – ACCÈS FERMÉ</div>
 
 <script>
-// Date cible : 28 mars 2026 à 21:00 France → 20:00 UTC
+// Date cible
 const targetDate = new Date('2026-03-28T20:00:00Z').getTime();
 
-// 🔑 TOUS TES CODES
+
 const codes = {
     "NICHE.": "Gentil.html",
     "ORAPS3": "Mechant.html",
     "9204": "sujet1.html",
-    "8430": "Cltchef.html"
+    "8430": "Cltchef.html",
+    "3911": "Sujet2.html",
+    "6512": "archive.html",
+    "archives": "final.html"
 };
 
 const countdownEl = document.getElementById("countdown");
