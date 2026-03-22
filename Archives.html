@@ -7,53 +7,138 @@
 <style>
 body {
     background: black;
-    color: white;
+    color: #c00;
     font-family: monospace;
     padding: 40px;
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
 
 h1 {
     color: #ccc;
     margin-bottom: 30px;
+    text-shadow: 0 0 10px #800;
 }
 
 .file {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 1s ease, transform 1s ease;
+}
+
+.file.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 a {
     color: #c00;
     text-decoration: none;
+    font-size: 1.1em;
 }
 
 a:hover {
     text-shadow: 0 0 5px red;
+    color: #f44;
+}
+
+/* Curseur clignotant */
+.cursor {
+    border-right: 2px solid #c00;
+    animation: blink 0.7s infinite;
+    margin-left: 3px;
+}
+
+@keyframes blink {
+    0%, 100% { border-color: #c00; }
+    50%      { border-color: transparent; }
+}
+
+/* Glitch léger */
+.glitch {
+    animation: glitch 5s infinite;
+}
+
+@keyframes glitch {
+    0%   { transform: translate(0); }
+    20%  { transform: translate(-1px, 1px); }
+    40%  { transform: translate(1px, -1px); }
+    60%  { transform: translate(-0.5px, 0.5px); }
+    100% { transform: translate(0); }
+}
+
+p, h1 {
+    min-height: 1.4em;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Archives récupérées</h1>
+<h1 id="title"></h1>
+<p id="p1"></p>
+<p id="p2"></p>
+<p id="p3"></p>
 
-<p>Certains fichiers ont été retrouvés.</p>
-<p>Attention à ce que tu ouvres...</p>
+<div class="file" id="file1"><a href="Doc1.docx" target="_blank">rapport.01.docx</a></div>
+<div class="file" id="file2"><a href="Doc2.docx" target="_blank">experience_sujet.docx</a></div>
+<div class="file" id="file3"><a href="Doc3.docx" target="_blank">note_intern.docx</a></div>
+<div class="file" id="file4"><a href="Doc4.docx" target="_blank">message_cache.docx</a></div>
 
-<div class="file">
-    📄 <a href="Doc1.docx" target="_blank">rapport_01.docx</a>
-</div>
+<script>
+const texts = [
+    { id: "title", content: "Archives récupérées" },
+    { id: "p1",    content: "Certains fichiers ont été retrouvés." },
+    { id: "p2",    content: "Attention à ce que tu ouvres..." },
+    { id: "p3",    content: "Les documents suivants sont accessibles." }
+];
 
-<div class="file">
-    📄 <a href="doc2.docx" target="_blank">experience_sujet.docx</a>
-</div>
+const files = [
+    "file1",
+    "file2",
+    "file3",
+    "file4"
+];
 
-<div class="file">
-    📄 <a href="doc3.docx" target="_blank">note_interne.docx</a>
-</div>
+let textIndex = 0;
+let charIndex = 0;
 
-<div class="file">
-    📄 <a href="doc4.docx" target="_blank">message_cache.docx</a>
-</div>
+function typewriter() {
+    if (textIndex < texts.length) {
+        const currentItem = texts[textIndex];
+        const element = document.getElementById(currentItem.id);
+
+        if (charIndex < currentItem.content.length) {
+            element.innerHTML = currentItem.content.substring(0, charIndex + 1) + '<span class="cursor">|</span>';
+            charIndex++;
+            setTimeout(typewriter, 60);  // vitesse frappe
+        } else {
+            element.innerHTML = currentItem.content;
+            textIndex++;
+            charIndex = 0;
+            setTimeout(typewriter, 1500);  // pause entre paragraphes
+        }
+    } else {
+        // Tous les textes affichés → on enlève le curseur final
+        document.querySelectorAll('.cursor').forEach(c => c.remove());
+        // Puis on fait apparaître les fichiers un par un
+        showFiles(0);
+    }
+}
+
+function showFiles(index) {
+    if (index < files.length) {
+        const fileEl = document.getElementById(files[index]);
+        fileEl.classList.add("visible");
+        setTimeout(() => showFiles(index + 1), 1200);  // délai entre chaque fichier
+    }
+}
+
+// Lancer au chargement
+window.onload = typewriter;
+</script>
 
 </body>
-</html>
+</html> 
