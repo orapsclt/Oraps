@@ -1,1 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Fichier</title>
 
+<style>
+body {
+    background: black;
+    color: #c00;
+    font-family: monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Fichier caché au début */
+.file {
+    opacity: 0;
+    transition: opacity 2s;
+    font-size: 1.2em;
+}
+
+a {
+    color: #c00;
+    text-decoration: none;
+}
+
+a:hover {
+    text-shadow: 0 0 5px red;
+}
+</style>
+</head>
+
+<body>
+
+<div class="file" id="file">
+    📄 <a href="sparo.docx" target="_blank">sparo.docx</a>
+</div>
+
+<script>
+// Apparition après 3 secondes
+setTimeout(() => {
+    document.getElementById("file").style.opacity = 1;
+}, 3000);
+</script>
+
+</body>
+</html>
